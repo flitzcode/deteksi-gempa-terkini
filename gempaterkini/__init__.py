@@ -19,13 +19,14 @@ def ekstraksi_data():
         return None
     if content.status_code == 200:
         #200-299 = berhasil, 300-399 =  redirection, 500-599 = server error, 400-499 = client errors,
-        print(content.text)
-        #soup = BeautifulSoup(content)
-        #print(soup.prettify())
+        soup = BeautifulSoup(content.text, 'html.parser')
+        tanggal = soup.find('span',{'class':'waktu'})
+        waktu = tanggal.text.split(', ')[1]
+        tanggal = tanggal.text.split(', ')[0]
 
         hasil = dict()
-        hasil['tanggal'] = '23 Juli 2022'
-        hasil['waktu'] = '14:35:46 WIB'
+        hasil['tanggal'] = tanggal #'23 Juli 2022'
+        hasil['waktu'] = waktu #'14:35:46 WIB'
         hasil['magnitudo'] = '5.7'
         #hasil['kedalaman'] = '13 Km'
         hasil['lokasi'] = {'ls': 7.57, 'bt': 122.45}
@@ -42,7 +43,7 @@ def tampilkan_data(result):
         return
     print('Gempa Terakhir berdasarkan BMKG')
     print(f"Tanggal {result['tanggal']}")
-    print(f"Waktu {result['tanggal']}")
+    print(f"Waktu {result['waktu']}")
     print(f"Magnitudo {result['magnitudo']}")
     print(f"Lokasi: LS={result['lokasi']['ls']}, BT={result['lokasi']['bt']}")
     print(f"Pusat {result['pusat']}")
